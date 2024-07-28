@@ -1,0 +1,44 @@
+vector<vector<int>> verticalTraversal(TreeNode* root) {
+        
+        queue<pair<TreeNode*, pair<int, int>>> q;
+        map<int, map<int, multiset<int>>> mp;
+
+        q.push({root, {0, 0}});
+        //vertical horizontal
+
+        while(q.size() != 0){
+            auto it = q.front();
+            q.pop();
+            auto node = it.first;
+            int vl = it.second.first;
+            int hl = it.second.second;
+
+            mp[vl][hl].insert(node -> val);
+
+            if(node -> left != NULL){
+                q.push({node -> left, {vl-1, hl+1}});
+            }
+
+            if(node -> right != NULL){
+                q.push({node -> right, {vl+1, hl+1}});
+            }
+        }
+
+        vector<vector<int>> ans;
+
+        for(auto it: mp){
+            vector<int> v;
+            auto mpp = it.second;
+            for(auto it2: mpp){
+                auto mulset = it2.second;
+                for(auto num: mulset){
+                    v.push_back(num);
+                }
+            }
+
+            ans.push_back(v);
+
+        }
+        return ans;
+
+    }
